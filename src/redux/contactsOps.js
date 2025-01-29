@@ -6,10 +6,11 @@ axios.defaults.baseURL = "https://6793e40c5eae7e5c4d9036aa.mockapi.io";
 
 
 export const fetchContacts = createAsyncThunk(
-  "contacts/fetchAll",
+  "contacts/fetchContacts",
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/contacts");
+      console.log("Contacts from API:", response.data);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -19,16 +20,17 @@ export const fetchContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   "contacts/addContact",
-  async ( newContact, thunkAPI) => {
+  async ({ name, number }, thunkAPI) => {
     try {
-      const response = await axios.post("/contacts", newContact);
+      console.log("Перед відправкою:", { name, number });
+      const response = await axios.post("/contacts", { name, number });
+      console.log("Added contact:", response.data); // Додати перевірку
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }
   }
 );
-
 
 export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",

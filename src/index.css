@@ -105,9 +105,7 @@ button:disabled {
   gap: 15px;
   width: 100%;
   max-width: 400px;
-  /* Обмеження ширини форми */
   margin: 0 auto;
-  /* Центрування форми */
 }
 .contact {
   display: flex;

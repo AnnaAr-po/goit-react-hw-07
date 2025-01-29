@@ -1,24 +1,15 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { addContact, deleteContact, fetchContacts } from './contactsOps';
-
-const initialState = {
-  items: [],
-  loading: false,
-  error: null,
-  filter: '',  
-};
+import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { fetchContacts, addContact, deleteContact } from "./contactsOps";
 
 const contactsSlice = createSlice({
-  name: 'contacts',
-  initialState,
-  reducers: {
-    setFilter(state, action) {
-      state.filter = action.payload;
-    },
+  name: "contacts",
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
   },
   extraReducers: (builder) => {
     builder
-      
       .addCase(fetchContacts.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -31,44 +22,23 @@ const contactsSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      
-      .addCase(addContact.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(addContact.fulfilled, (state, action) => {
-        state.loading = false;
         state.items.push(action.payload);
       })
-      .addCase(addContact.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      
-      .addCase(deleteContact.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(deleteContact.fulfilled, (state, action) => {
-        state.loading = false;
-        state.items = state.items.filter((contact) => contact.id !== action.payload);
-      })
-      .addCase(deleteContact.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.items = state.items.filter(
+          (contact) => contact.id !== action.payload
+        );
       });
   },
 });
 
-export const { setFilter } = contactsSlice.actions;
-
 export const selectFilteredContacts = createSelector(
-  [(state) => state.contacts.items, (state) => state.contacts.filter],
-  (contacts, filter) =>
-    contacts.filter((contact) =>
+  [(state) => state.contacts.items, (state) => state.filters.name],
+  (items, filter) =>
+    items.filter((contact) =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
     )
 );
-
 
 export default contactsSlice.reducer;

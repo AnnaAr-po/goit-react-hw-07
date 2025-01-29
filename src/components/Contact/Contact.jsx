@@ -4,6 +4,7 @@ import { deleteContact } from "../../redux/contactsOps";
 import css from "./Contact.module.css";
 
 const Contact = ({ id, name, number }) => {
+  console.log("Contact props:", { id, name, number });
   const dispatch = useDispatch();
 
   const handleDelete = () => {
@@ -13,7 +14,7 @@ const Contact = ({ id, name, number }) => {
   return (
     <li className={css.contact}>
       <p>
-        {name}: {number}
+        {name}: {number || "Номер відсутній"}
       </p>
       <button onClick={handleDelete} className={css.button}>
         Delete
